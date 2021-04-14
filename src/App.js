@@ -1,7 +1,26 @@
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import React, {useState, useEffect} from 'react';
 
 function App() {
+  const [users, setUsers] = useState([])
+
+  const getUser = async () => {
+    try {
+      const usersArr = await axios.get('http://jsonplaceholder.typicode.com/users');
+      console.log(usersArr);
+      setUsers(usersArr.data);
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const cleanUser = () => {
+    setUsers([])
+  }
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +36,10 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={getUser}>get users</button>
+        <button onClick={cleanUser}>clean users</button>
+        {users.length}
+        <div>{users.map(user => `<div>${user.name}</div>`)}</div>
       </header>
     </div>
   );
